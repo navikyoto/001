@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from scraper.scrape import main, json_
+from .scrape import BaseScraper
 from typing import List, Dict, Optional, Callable
 
 @dataclass
@@ -21,6 +21,7 @@ def link(info: Info):
     ...
     return link
 
+scraper = BaseScraper()
 
 def get_info( content: List[str]) -> Dict[str, any]:
     for item in content:
@@ -40,5 +41,5 @@ def display_info(info: Callable[[any], any]) -> str:
     
     
 async def info_(info: Info) -> None:
-    content = await main(url = link(info), output = json_)
+    content = await scraper.main(url = link(info), output = scraper.json_)
     display_info(get_info(content))

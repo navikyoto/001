@@ -2,10 +2,10 @@ import re
 import asyncio
 from typing import List, Any
 from collections import defaultdict
-from scraper.scrape import main, text_, scrape_info_, soup, HEADER
+from .scrape import BaseScraper
 
 
-class Detections:
+class Detections(BaseScraper):
     def __init__(self, address: str):
         self.page = 1
         self.address = address
@@ -16,16 +16,18 @@ class Detections:
     def _url(self) -> str:
         return f'https://etherscan.io/token/generic-tokenholders2?m=light&a={self.address}&s=100000000000000000000000000&sid=07467e3c4a8cf6bc8d0418bb4ac45e62&p={self.page}'
 
+
     async def return_(self, content: str, element: str) -> None:
-        page = await main(content, text_, headers=HEADER)
-        return await scrape_info_(page, element)
+        page = await self.main(content, text_, headers=self.header())
+        return await self.scrape_info_(page, element)
 
     @property
     async def get_url(self) -> None:
-        return await main(self.url, text_)
+        return await self.main(self.url, self.text_)
 
     async def scrape_page(self) -> None:
-        pages = await scrape_info_(await self.get_url, 'span.page-link.text-nowrap')
+        pages = await self.scrape_info_(await self.get_url, 'span.page-link.text-nowrap')
+        print(pages)
         page = [re.findall(r'[0-9]+', page.text) for page in pages]
         self.pages_.append(int(page[0][1]))
 
@@ -46,7 +48,7 @@ class Detections:
             holder = [str(holder.text).strip() for holder in holders]
 
             result.update({
-                soup(str(holder)).text: str(percent['aria-valuenow'])
+                self.soup(str(holder)).text: str(percent['aria-valuenow'])
                 for holder, percent in zip(holder, percentages)
             })
 
@@ -56,4 +58,4 @@ class Detections:
         return self.holder
 
     def run(self) -> Any:
-        return asyncio.run(self.scrape_info())
+        return asyncio.run(self.scrape_page())

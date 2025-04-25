@@ -1,98 +1,58 @@
-import abc
 import aiohttp
-from dataclasses import dataclass
-from utils.logger import Project_Logger
-from typing import List, Dict, Optional
+from bs4 import BeautifulSoup
+from typing import Dict, List
+from dataclasses import field    
+from .proxy import proxy_list, ProxyManager
+from ..utils.logger import logging
 
 
-@dataclass
-class TokenConfig:
-    chainID: str
-    tokenAddress: str
+# TODO: Rapihkan
+# TODO: Line 53 error
+# TODO: Buat menjadi pendek
+# TODO: Jadikan class (done)
 
 
-class BaseScraper(abc.ABC):
-    def __init__(
-        self,
-        base_url: str,
-        config: TokenConfig
-    ):
-        """
-        Constructor untuk scraper
+class BaseScraper:
 
-        Args:
-            base_url (str): Link dari website yang akan di scraping 
-            config: chainID dan token address dari crypto yang akan di scrape
-        """
+   def __init__(self):
+      self.proxy_manager = ProxyManager(proxy_list)
 
-        self.session = None
-        self.config = config
-        self.base_url = base_url
+   def header(self):
+      return {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36'}
 
-    async def __aenter__(self):
-        """
-        Metode async context manager
-        Membuat session aiohttp
-        """
 
-        self.session = aiohttp.ClientSession()
-        return self
+   def json_(self,response: str) -> None:
+      return response.json()
 
-    async def __aexit__(self, exc_type, exc_value, exc_tb):
-        """
-        Closing session
-        """
+   def text_(self, response: dict) -> None:
+      return response.text()
 
-        if self.session:
-            await self.session.close()
+   def soup(self, soup: str) -> None:
+      return BeautifulSoup(soup, 'html5lib')
 
-    async def fetch(
-        self,
-        url: str,
-        method: str = 'GET',
-        headers: Optional[Dict] = None,
-        params: Optional[Dict] = None
-    ) -> Optional[Dict]:
-        """
-        url (string): URL untuk scrape/fetch
-        method (str): GET or POST
-        headers (optional): Kustom headers
-        params (optional): Parameters quert
-        """
+   async def scrape_info_(self, content: str = None, element: str = None) -> None:
+      soup = BeautifulSoup(content, 'html5lib')
+      print(soup)
+      content = [page for page in soup.select(element)]
+      return content
+      ...
 
-        logger = Project_Logger()
-        
-        try:
-            default_headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
-                'Accept': 'application/json'
-            }
-
-            headers = {**default_headers, **(headers or {})}
-
-            async with self.session.request(
-                method,
-                url,
-                headers=headers,
-                params=params,
-            ) as response:
-                response.raise_for_status()
-                return await response.json()
-                
-        except aiohttp.ClientError as e:
-            logger.error(f"Fetch error {e}")
-            return None
-        except Exception as e:
-            logger.error(f"Unexpected error {e}")
-            return None
-        
-        raise NotImplementedError
-    
-    @abc.abstractmethod
-    async def scrape(self) -> List[Dict]:
-        """
-        Metode abstrak untuk scraping
-        Wajib di-override di child class
-        """
-        pass
-    
+   async def fetch(
+      self,
+      session: aiohttp.ClientSession, 
+      url: str, 
+      headers: Dict[str, str] = field(default_factory=dict),
+      output: str = None,
+      ) -> None:
+      async with session.get(url, headers = self.header(), proxy=self.proxy_manager.get_proxy()) as response:
+         return await output(response)
+         ...   
+         
+   async def main(self, url: str, output: str | list, headers = None ) -> None:
+      try:
+         async with aiohttp.ClientSession() as session:
+            content = await self.fetch(session, url, headers = headers, output = output)
+            print("Scraping of token") 
+            return content
+      except Exception as error:
+         print(f"Error while scraping token: {error}")

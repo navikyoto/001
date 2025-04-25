@@ -1,7 +1,10 @@
+import random
 import aiohttp
 import asyncio
 import requests
+from typing import List
 import concurrent.futures
+from datetime import datetime
 from bs4 import BeautifulSoup
 
 # TODO: Filter proxy 
@@ -17,7 +20,7 @@ async def main():
    url = 'https://free-proxy-list.net/'
    async with aiohttp.ClientSession() as session:
       content = await fetch(session, url)
-      soup = BeautifulSoup(content, 'lxml')
+      soup = BeautifulSoup(content, 'html5lib')
       
       ip_address = soup.select('.table-responsive .table.table-striped.table-bordered tbody tr td:first-child')
       port_address = soup.select('.table-responsive .table.table-striped.table-bordered tbody tr td:nth-of-type(2)')
@@ -35,3 +38,29 @@ async def main():
                     
 asyncio.run(main())
 # print(len(proxy_list))
+
+class ProxyManager:
+   
+   def __init__(self, proxy: List['str']):
+      self.proxies = proxy
+      self.current_proxies = []
+      self.last_rotation_time = datetime.now()
+      self._proxy_rotation()
+
+   def _proxy_rotation(self):
+      self.current_proxies = self.proxies.copy()
+      random.shuffle(self.current_proxies)
+      self.last_rotation_time = datetime.now()
+      print(f"Proxies rotated at {self.last_rotation_time}")
+
+   def get_proxy(Self) -> str:
+      if datetime.now() - self.last_rotation_time >= timedelta(minutes=30):
+         self._proxy_rotation()
+
+      return random.choice(self.current_proxies)
+
+   async def check_rotation(self):
+      while True:
+         if datetime.now() - self.last_rotation_time >= timedelta(minutes=30):
+            self._proxy_rotation()
+         await asyncio.sleep(60)
