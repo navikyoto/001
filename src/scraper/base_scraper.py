@@ -1,8 +1,9 @@
 import aiohttp
 from bs4 import BeautifulSoup
-from ..utils.logger import Project_Logger
+from utils.logger import Project_Logger
 from dataclasses import field, dataclass    
 from .proxy import proxy_list, ProxyManager
+from tenacity import retry, wait_exponential, stop_after_attempt
 from typing import Dict, List, Any, Callable, Optional, Union,TypeVar
 
 
@@ -11,9 +12,10 @@ from typing import Dict, List, Any, Callable, Optional, Union,TypeVar
 # TODO: Buat menjadi pendek
 # TODO: Jadikan class (done)
 
+T = TypeVar('T')
 
 @dataclass
-class ScraperResponese:
+class ScraperResponse:
    status: int
    content: Any
    url: str
@@ -40,15 +42,16 @@ class BaseScraper:
         return await response.json()
 
    async def process_text(self, response: aiohttp.ClientResponse) -> str:
-        """Process response as JSON"""
+        """Process response as TEXT"""
         return await response.text()
 
    async def process_soup(self, response: aiohttp.ClientResponse) -> BeautifulSoup:
-        """Process response as JSON"""
+        """Process response as SOUP OBJECT"""
         text = await response.text()
         return BeautifulSoup(text, 'html5lib')
 
-   async
+   async def extract_element(self, soup: BeautifulSoup, selector: str) -> List[Any]:
+      return soup.select(selector)
 
    async def scrape_info_(self, content: str = None, element: str = None) -> None:
       soup = BeautifulSoup(content, 'html5lib')
@@ -57,22 +60,76 @@ class BaseScraper:
       return content
       ...
 
+   @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
    async def fetch(
       self,
       session: aiohttp.ClientSession, 
-      url: str, 
+      url: str,
+      processor: Callable[[aiohttp.ClientResponse], T],
       headers: Dict[str, str] = field(default_factory=dict),
-      output: str = None,
-      ) -> None:
-      async with session.get(url, headers = self.header(), proxy=self.proxy_manager.get_proxy()) as response:
-         return await output(response)
-         ...   
+      timeout: int = 30,
+      ) -> ScraperResponse:
+      full_headers = self.get_header(headers)
+      proxy = self.proxy_manager.get_proxy() if self.proxy_manager else None
+      
+      self.logger.info(f"fetching {url}")
          
-   async def main(self, url: str, output: str | list, headers = None ) -> None:
       try:
+         async with session.get(
+            url,
+            headers= full_headers,
+            proxy=proxy,
+            timeout= aiohttp.ClientTimeout(total=timeout)
+         ) as response:
+            if response.status == 200:
+               self.logger.info(f"Successfully fetched {url} (Status: {response.status})")
+               content = await processor(response)
+               return ScraperResponse(
+                  status=response.status,
+                  content=content,
+                  url=url,
+                  headers=dict(response.headers)
+               )
+            else:
+               error_msg = f"HTTP ERROR {response.status} for {url}"
+               self.logger.warning(error_msg)
+               return ScraperResponse(
+                  status=response.status,
+                  content=None,
+                  url=url,
+                  headers=dict(response.headers)
+               )
+      except Exception as e:
+         error_msg = f"Fetch failed for {url}: {str(e)}"
+         self.logger.error(error_msg)
+   
+   async def scrape(
+      self,
+      url: str,
+      proccessor: Callable[[aiohttp.ClientResponse], T] = None,
+      headers: Optional[Dict[str, str]] = None,
+      timeout: int = 30
+   ) -> ScraperResponse:
+      if proccessor is None:
+         proccessor = self.process_soup
+
+      try:
+         self.logger.info(f"Starting scraping for {url}")
          async with aiohttp.ClientSession() as session:
-            content = await self.fetch(session, url, headers = headers, output = output)
-            print("Scraping of token") 
-            return content
+            response = await self.fetch(
+               session=session,
+               url=url,
+               processor=proccessor,
+               headers=headers,
+               timeout=timeout
+            )
+            return response
       except Exception as error:
-         print(f"Error while scraping token: {error}")
+         error_msg = f"Session ERROR for {url}: {str(error)}"
+         self.logger.error(error_msg)
+         return ScraperResponse(
+            status=0,
+            content=None,
+            url=url,
+            error=error_msg
+         )
