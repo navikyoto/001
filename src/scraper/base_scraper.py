@@ -29,7 +29,7 @@ class BaseScraper:
       self.proxy_manager = ProxyManager(proxy_list) if use_proxies else None
       self.logger = Project_Logger(logger_name)
       self.default_header = {
-         'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36'
+         'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36'
          }
 
    def get_header(self, additional_headers: Optional[Dict[str, str]] = None) -> Dict[str, str]:
@@ -124,6 +124,7 @@ class BaseScraper:
                timeout=timeout
             )
             return response
+            print(response.content)
       except Exception as error:
          error_msg = f"Session ERROR for {url}: {str(error)}"
          self.logger.error(error_msg)
