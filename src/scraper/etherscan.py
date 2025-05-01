@@ -3,7 +3,7 @@ import asyncio
 from scraper import BaseScraper
 
 class EtherScan(BaseScraper):
-   def __init__(self, use_proxies = True, logger_name="etherscan.io"):
+   def __init__(self, use_proxies = False, logger_name = "etherscan.io"):
       super().__init__(use_proxies, logger_name)
       self.url = self._url()
 
@@ -12,7 +12,8 @@ class EtherScan(BaseScraper):
 
    async def tes(self):
       page = await self.scrape(url=self.url, proccessor=self.process_text)
-      return page
+      # print(self.url)
+      print(page)
 
 
 
