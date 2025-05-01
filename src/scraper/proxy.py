@@ -1,10 +1,11 @@
 import random
-import aiohttp
 import asyncio
-import requests
 from typing import List
 import concurrent.futures
-from datetime import datetime
+from datetime import datetime, timedelta
+
+import aiohttp
+import requests
 from bs4 import BeautifulSoup
 
 # TODO: Filter proxy 
@@ -53,7 +54,7 @@ class ProxyManager:
       self.last_rotation_time = datetime.now()
       print(f"Proxies rotated at {self.last_rotation_time}")
 
-   def get_proxy(Self) -> str:
+   def get_proxy(self) -> str:
       if datetime.now() - self.last_rotation_time >= timedelta(minutes=30):
          self._proxy_rotation()
 

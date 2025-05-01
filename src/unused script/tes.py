@@ -148,7 +148,7 @@ class BaseScraper:
       print(soup)
       content = [page for page in soup.select(element)]
       return content
-      ...
+      ... 
 
    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
    async def fetch(

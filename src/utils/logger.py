@@ -3,15 +3,15 @@ import aiohttp
 from tenacity import retry, wait_exponential, stop_after_attempt
 
 class Project_Logger():
-   def __init__(self):
+   def __init__(self, logger_name):
       logging.basicConfig(
          level = logging.INFO,
          format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
          datefmt = "%d/%m/%y - [%H:%M:%S]"
       )
       
-      self.logger = logging.getLogger(__name__)
-      file_handler = logging.FileHandler(f"{__name__}.log")
+      self.logger = logging.getLogger(logger_name)
+      file_handler = logging.FileHandler(f"{logger_name}.log")
       self.logger.addHandler(file_handler)
       
       
