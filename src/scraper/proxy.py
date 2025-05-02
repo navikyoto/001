@@ -1,3 +1,4 @@
+import time
 import random
 import asyncio
 from typing import List
@@ -7,6 +8,7 @@ from datetime import datetime, timedelta
 import aiohttp
 import requests
 from bs4 import BeautifulSoup
+from tqdm import tqdm
 
 # TODO: Filter proxy 
 
@@ -30,15 +32,47 @@ async def main():
       for ip, port, http in zip(ip_address, port_address, http_type):
             proxy = f"https://{ip.text}:{port.text}" if http.text == 'yes' else f"http://{ip.text}:{port.text}"
             proxy_list.append(proxy)
-            # print(proxy)
-            
-# async def filter_proxy():
-#    header = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"}
-   
 
-                    
 asyncio.run(main())
-# print(len(proxy_list))
+
+
+def filter_proxy(proxy: str):
+   if not proxy.startswith(('http://', 'https://')):
+      proxy = f"http://{proxy}"
+
+      start_time = time.time()      
+      proxies = {
+         'http': proxy,
+         'https': proxy
+      }
+   
+   try:
+      response = requests.get(
+         "http://etherscan.io",
+         proxies=proxies,
+         timeout=10
+      )
+
+      response_time = time.time() - start_time
+
+      if response.status_code == 200:
+         return proxy, True, response_time
+      else:
+         return "FALSE"
+         #return proxy, False, response_time
+
+   except Exception as e:
+      return "ERROR"
+
+
+#for proxy in proxy_list:
+#   print(filter_proxy(proxy))
+
+
+
+
+
+
 
 class ProxyManager:
    

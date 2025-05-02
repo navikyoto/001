@@ -8,7 +8,7 @@ class EtherScan(BaseScraper):
       self.url = self._url()
 
    def _url(self):
-      return f"https://mangakatana.com"
+      return f"https://etherscan.io"
 
    async def tes(self):
       page = await self.scrape(url=self.url, proccessor=self.process_text)
