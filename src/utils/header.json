@@ -1,0 +1,20 @@
+{
+   "ether" : {
+      "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+      "accept-encoding": "gzip, deflate, br, zstd",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:139.0) Gecko/20100101 Firefox/139.0",
+      "sec-ch-ua": "'Google Chrome';v='135', 'Not-A.Brand';v='8', 'Chromium';v='135'",
+      "referer": "https://etherscan.io/token/generic-tokenholders2?m=light&a=0x41D06390b935356b46aD6750bdA30148Ad2044A4&s=100000000000000000000000000&sid=07467e3c4a8cf6bc8d0418bb4ac45e62&p=1&__cf_chl_tk=vonScrp03nlcYA2n_B3.sTTHc31puGF.glyAPKifXK8-1746254426-1.0.1.1-FFjaPr4SJF6.KRGC05oX9Cq5IkyYAsb78P888pYlu_8",
+      "origin": "https://etherscan.io",
+      "cookie": "cf_clearance=CYclLnflK2asOA2JbsGBsbCOKZcglFzagJnTO0ZVkzQ-1746345566-1.2.1.1-PwP6Jkw4xBIB9C5RXGIAdEayi1TDCc2tBxGQFMB9sob1iH1vtAegci2G2_u8mbDn.6phZldbJx8l2Xfe8goybCljCv2_iCLm7GOlZ_iCZym5jjYQsyxUsegiGlM5PsVJTgvcyok0J99vYObCfN4aFubOGkBXLYzAbgQwfLjSqN9zCoU2WtafQ.vKtcsFms9.XOgEn85U2wF5Mb1kSB08Bo_gclCrbClje1pERPOV6aqmln8BMmEey6UctFdTemM6CWX94MfZPxExOxhxXY5dyEHKQis14lFYyX4XMyHEKxDMC0RPHCU2J5ac0Ghq3WYtSKiUHnlLbM9UE8rI0wXBJ9boBLIOZ7OjiCHg9SovGgzMPX5KmOYCdphHZySaG9iZ; __cflb=02DiuFnsSsHWYH8WqVXaqGvd6BSBaXQLUkjhomDSp2Av8; ASP.NET_SessionId=v3etp0lw41bvbkljvlm5nxyg; _ga_T1JC9RNQXV=GS1.1.1746345549.1.0.1746345549.60.0.0; _ga=GA1.2.1798830631.1746345550; etherscan_offset_datetime=+7; _gid=GA1.2.297046174.1746345550; _gat_gtag_UA_46998878_6=1"
+      },
+   "bsc" : {
+      "accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+      "accept-encoding": "gzip, deflate, br, zstd",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:139.0) Gecko/20100101 Firefox/139.0",
+      "sec-ch-ua": "'Google Chrome';v='135', 'Not-A.Brand';v='8', 'Chromium';v='135'",
+      "Referer": "https://bscscan.com/token/0xA49fA5E8106E2d6d6a69E78df9B6A20AaB9c4444?__cf_chl_tk=vi7ob_tsNT_YETnu7wT9zmg6ByhxcwNYSmQkTi0hR7w-1746350333-1.0.1.1-EwrPPkaI7mms61rp2DT2X0L4kP3KyT3o8kFUdsn2c_Q",
+      "Origin": "https://bscscan.com",
+      "cookie": "__cflb=0H28vyb6xVveKGjdV3CYUMgiti5JgVshvdWTkY2smSk; ASP.NET_SessionId=w5yb2gihkaczrxlnk1m01zgs; cf_clearance=E.xY0Nbn15.kPLpU7v4mep5F4KRe0L_dJsMi9HYhAww-1746350340-1.2.1.1-W1VmT7ipkaT9bEh7Z3PHMKxXZ3M65_OHYDR3lDuhod.EvPGirWL843c_3cp.Ojj3uRy.9yh1.xesPPVmcGMTlDzdQBN1yuHDtoLuObpq0CgdpcfBtPpPgqwAH5fLPwFCbWdHewxmdqLCFLmvBOK0nWsdU6G85XgkkhBL61sRswnbthgKzuUGtHJfQKEWUn85sM4zLWAq._HVXbcIrI2X0KZIpbMWT.Npx9WMD0LLd2vZqSZU.7f1gdEs0ILrGsCijbs7nY6jYhcO.2.P23TowyPHzZnBVjQgEJVZpW9cdadlmD_96CdUFQ6aq2ORCtxitjqL46qlGE23TIYUo54kVF345HomgRgXOEybxwoIeBvXJ6WKCZ0oR17NGUzVqDej; _ga_PQY6J2Q8EP=GS1.1.1746350317.1.1.1746350408.0.0.0; _ga=GA1.1.1362842431.1746350318; bscscan_offset_datetime=+7; bscscan_switch_token_amount_value=value; bitmedia_fid=eyJmaWQiOiJhMDI1NTRiYjlhNTc5NzA4OTBkYmY0NzJhMWI5NzJhOCIsImZpZG5vdWEiOiI2MDI5NTgxMTQzNWM3YzYzNjRmNDRmY2NjZDBlN2JiYyJ9"
+   }
+}
