@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/home/Desktop/GIT/001/.dex_env/bin/python3.11
+#!/data/data/com.termux/files/home/Desktop/GIT/001/.dex_env/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
