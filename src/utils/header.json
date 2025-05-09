@@ -15,9 +15,16 @@
       "sec-ch-ua": "'Google Chrome';v='135', 'Not-A.Brand';v='8', 'Chromium';v='135'",
       "Referer": "https://bscscan.com/token/0xA49fA5E8106E2d6d6a69E78df9B6A20AaB9c4444",
       "Origin": "https://bscscan.com",
-      "cookie": "bscscan_offset_datetime=+7; ASP.NET_SessionId=cpqaadlkuq1wv5dswbh34wew; __cflb=0H28vyb6xVveKGjdV3CYUMgiti5JgVsBesTcf8aJx6G; bscscan_switch_token_amount_value=value; cf_clearance=atoulpcQYF_hE1ZqdBUk4z2Cb4EDm2Tueq2dcYWQD0c-1746423198-1.2.1.1-3xTZtp1CpcfMaXq8yfcTIjkiyokXjI8pCmLAB8nGe51OsJDs3aEraXAgDY8Jmltkg.9wwlwl5ftV6oo26dEMNJuzqL1tDTVmikp5CfISrKkX1_noK0hccYAieqOVighCDMACasne8UUr1zUKRh7khQgxG_DxEIEPYcVGvCIixgnOBkDQ37D5erKZdbzClV32I9PHrt7sRmN.kyoASHEtxLY_.x1TmuC4kKG4lMxSebxi7Ltp2LGjiyIqkSpGmlWunjdL0YfkHsVRSgFu9dU3_iqX5qzCwfBfhp6txayQxCxrMpTxIskhacqqciai.aHVW3DgAwWbyadZf6EF_BqYsDXfI6Eyspy8qkjyUlJeBo._kOjGog9CqRV1p2hbXMIn"
+      "cookie": "bscscan_offset_datetime=+7; ASP.NET_SessionId=cpqaadlkuq1wv5dswbh34wew; bscscan_switch_token_amount_value=value; bscscan_cookieconsent=True; __cflb=02DiuJNoxEYARvg2sN6bbkRgdyaaxAA7F7bxPKiwm8Tj2; cf_clearance=MEqk38vGyLJZtKG.JIkzCPri0JGA0vHCE3E3uuSXh3c-1746758831-1.2.1.1-fjBBsj80Wp5Bx_tEjofcWXZC9WWY4FIoTxc6FOllQpDJeDoIrEFGZc3oObsB.HBk0hid1OpSrsfEYvu3c5w1g_T0seVSkfEv62sge5dOHUN4fu3MwTplYaZpxfyg9UXBkd.Vdvr6WjTBmxDDuydpzZnwXovHiYf9rTan015UD40F8qBGpDlQMRz.K2g5iY.zBaWUW0W7drxVzcqR5c8zPcSoz8nqnKDKaYzvyX.686wavA76GrAB_ysdoOPC_lerGslD0wIv8V09AWXHgTxWwaL3t8zRXvy.zZLnoVDlWhBqAJkdNBbLb0Xsx53BRZmvo5EE1ioHCOfq88vC6P5OKNR.vi2csD5jCV1g.MWPANsHyhUuTLdp.2uEMP8l2S9y"
    },
-   "solana" : {
-      
+   "sol" : {
+      ":authority:": "api-v2.solscan.io",
+      "accept": "application/json, text/plain, */*",
+      "accept-encoding": "gzip, deflate, br, zstd",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+      "sec-ch-ua": "'Google Chrome';v='135', 'Not-A.Brand';v='8', 'Chromium';v='135'",
+      "referer": "https://solscan.io/",
+      "origin": "https://solscan.io",
+      "cookie": "cf_clearance=3e.4hshjtNRHniLgnoy6lHi5xXJK6BME1g2hKKKwpm8-1742194271-1.2.1.1-ct5oDhfk7cXUWuXUkwG8DDA38Vc7sl34bz_1Q2HpId1.fc.ovg.371gSRwfToh44RD.C3iWB.j5fP2GC2XhbKWf3BiY3rBoQa.9T1jAHSvV8EEDgW0FYWnHQN4IqmvxygR5YePqAUYHOqkezQxeLlSBGdPx5wA8GfI3e8BO8GjDmt1w56j3QDi8e_BSpfVq8EI4g53S.zkApstNFfRwb.n.aeBsW9K4IMWOw0rv1CypbPXvxrlCKSr2LxB77717FyRkDDAfO9dksFqTvWAqWjsFlUJ7C59Un2XDmsS152sRm6T_lX0rCyCnbf7KLn29ZJIBAS7fNwtkG3YtL29Cojlvx5aCzU84Wh02L5a0YBpo"
    }
 }

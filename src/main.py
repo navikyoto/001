@@ -2,7 +2,7 @@ import asyncio
 from typing import Optional
 from dataclasses import dataclass
 from utils.logger import Project_Logger
-from scraper.ethereum import Detections
+from src.unused_script.ethereum import Detections
 from scraper.info_scrape import Info, info_, link
 # from scraper.base_scraper import MainScrape
 

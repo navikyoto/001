@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from .scrape import BaseScraper
+from ..unused_script.scrape import BaseScraper
 from typing import List, Dict, Optional, Callable
 
 @dataclass

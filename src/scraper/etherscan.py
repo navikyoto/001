@@ -1,8 +1,6 @@
 import re
-from collections import defaultdict
-
 import asyncio
-from bs4 import BeautifulSoup
+from collections import defaultdict
 
 from scraper import BaseScraper
 

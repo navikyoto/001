@@ -280,3 +280,52 @@ tes = TesDua()
 # print(tes["bsc"])
 
 print(tes.get_header())
+
+
+# class UrlBuilder:
+#    def __init__(self, base_url, address, page):
+#       self.base_url = base_url
+#       self.address = address
+#       self.page = page
+#       self.path = ""
+#       self.params = {}
+   
+#    def with_path(self, path):
+#       self.path = path
+#       return self
+   
+#    def with_param(self, key, value):
+#       self.params[key] = value
+#       return self
+   
+#    def build(self):
+#       url = self.base_url + self.path
+#       if self.params:
+#          url += "?" + "&".join(f"{k}={v}" for k, v in self.params.items())
+#       return url
+
+# # Usage
+#    def construct_urls(self):
+      
+#       tokenomics_url = self.with_path(f"{self.address}") \
+#                      .build()
+
+#       holder_url = self.with_path("/generic-tokenholders2") \
+#                   .with_param("m", "light") \
+#                   .with_param("a", self.address) \
+#                   .with_param("s", "1000000000000000000000000000") \
+#                   .with_param("sid", "70069bba651b7c2c32ee067cd0ed8821") \
+#                   .with_param("p", self.page) \
+#                   .build()
+
+#       return {
+#          "base": self.base_url,
+#          "tokenomics": tokenomics_url,
+#          "holder": holder_url
+#       }
+      
+      
+
+# tes = UrlBuilder("https://bscscan.com/token/", "0xA49fA5E8106E2d6d6a69E78df9B6A20AaB9c4444", "1")
+# holder = tes.construct_urls()
+# print(holder['holder'])

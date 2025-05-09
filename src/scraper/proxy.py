@@ -69,11 +69,6 @@ def filter_proxy(proxy: str):
 #   print(filter_proxy(proxy))
 
 
-
-
-
-
-
 class ProxyManager:
    
    def __init__(self, proxy: List['str']):

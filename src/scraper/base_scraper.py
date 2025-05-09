@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 from tenacity import retry, wait_exponential, stop_after_attempt
 
 from utils.logger import Project_Logger
+from .proxy import ProxyManager, proxy_list
 
 
 T = TypeVar('T')
@@ -20,8 +21,9 @@ class ScraperResponse:
    error: Optional[str] = None
 
 class BaseScraper:
-   def __init__(self, use_proxies: bool = False, logger_name: str = __name__):
+   def __init__(self, use_proxies: bool = True, logger_name: str = __name__):
       self.logger = Project_Logger(logger_name)
+      self.proxy_manager = ProxyManager(proxy_list) if use_proxies else False
       self.name = logger_name
 
    def get_header(self) -> Dict[str, str]:
@@ -29,7 +31,8 @@ class BaseScraper:
          files = json.load(file)
          header = {
             'etherscan.io': files['ether'],
-            'bscscan.io': files['bsc']
+            'bscscan.io': files['bsc'],
+            'solscan.io': files['sol']
          }
          return header.get(self.name, 'None')
 

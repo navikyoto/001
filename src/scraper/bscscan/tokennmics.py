@@ -3,5 +3,8 @@ from collections import defaultdict
 
 import asyncio
 
-from holder import 
-#class BscScan(BaseScraper):
+from scraper import BaseScraper
+from .url_ import UrlManager
+
+class BscScan(BaseScraper):
+   

@@ -1,30 +1,23 @@
 import re
-from urllib.parse import urljoin, urlencode
 from collections import defaultdict
 
 import asyncio
 
 from scraper import BaseScraper
+from .url_ import UrlManager
 
 class BscScan(BaseScraper):
-   def __init__(self, address, logger_name = "bscscan.io"):
-      super().__init__(logger_name)
+   def __init__(self, address, use_proxies = False ,logger_name = "bscscan.io"):
+      super().__init__(use_proxies, logger_name)
       self.page = 1
       self.pages = []
       self.address = address
       self.url = self._url()
       self.holder: defaultdict = defaultdict(str)
       
-   def build_url(self):
-      return {
-         "base": "https://bscscan.com/token/",
-         "tokenmics" : f"{self.address}#tokenInfo",
-         "holder" : f"generic-tokenholders2?m=light&a={self.address}&s=1000000000000000000000000000&sid=70069bba651b7c2c32ee067cd0ed8821&p={self.page}"
-      }
-      #return f'https://bscscan.com/token/generic-tokenholders2?m=light&a={self.address}&s=1000000000000000000000000000&sid=70069bba651b7c2c32ee067cd0ed8821&p={self.page}'
-   
-   def tes(self):
-      print(f"{self.url['base']}{self.url['holder']}")
+   def _url(self):
+      tes = UrlManager(self.address, self.page)
+      return tes.construct_url()["holder"]
    
    async def return_(self, url, element) -> None:
       page = await self.scrape(url=url, proccessor=self.process_text)
@@ -35,12 +28,10 @@ class BscScan(BaseScraper):
       pages = await self.scrape_element(page.content,'span.page-link.text-nowrap')
       pages_num = [re.findall(r'[0-9]+', page.text) for page in pages]
       self.pages.append(int(pages_num[0][1]))
-      # print(int(pages_num[0][1]))
       
    async def scrape_info(self) -> None:
       await self.scrape_page()
       result = {}
-      # print(self.pages[0])
       for pages in range(self.pages[0]):
          self.page = pages+1
          self.url = self._url()
@@ -63,6 +54,7 @@ class BscScan(BaseScraper):
       
       return self.holder
       
-tes = BscScan('0xA49fA5E8106E2d6d6a69E78df9B6A20AaB9c4444', 'bsc')
-tes.tes()
-#asyncio.run(tes.scrape_info())
+tes = BscScan('0xA49fA5E8106E2d6d6a69E78df9B6A20AaB9c4444')
+# print(tes._url())
+
+asyncio.run(tes.scrape_info())
