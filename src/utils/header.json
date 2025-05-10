@@ -2,7 +2,7 @@
    "ether" : {
       "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
       "accept-encoding": "gzip, deflate, br, zstd",
-      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
       "sec-ch-ua": "'Google Chrome';v='135', 'Not-A.Brand';v='8', 'Chromium';v='135'",
       "referer": "https://etherscan.io/token/0x41D06390b935356b46aD6750bdA30148Ad2044A4",
       "origin": "https://etherscan.io",
@@ -12,10 +12,10 @@
       "accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
       "accept-encoding": "gzip, deflate, br, zstd",
       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
-      "sec-ch-ua": "'Google Chrome';v='135', 'Not-A.Brand';v='8', 'Chromium';v='135'",
-      "Referer": "https://bscscan.com/token/0xA49fA5E8106E2d6d6a69E78df9B6A20AaB9c4444",
       "Origin": "https://bscscan.com",
-      "cookie": "bscscan_offset_datetime=+7; ASP.NET_SessionId=cpqaadlkuq1wv5dswbh34wew; bscscan_switch_token_amount_value=value; bscscan_cookieconsent=True; __cflb=02DiuJNoxEYARvg2sN6bbkRgdyaaxAA7F7bxPKiwm8Tj2; cf_clearance=MEqk38vGyLJZtKG.JIkzCPri0JGA0vHCE3E3uuSXh3c-1746758831-1.2.1.1-fjBBsj80Wp5Bx_tEjofcWXZC9WWY4FIoTxc6FOllQpDJeDoIrEFGZc3oObsB.HBk0hid1OpSrsfEYvu3c5w1g_T0seVSkfEv62sge5dOHUN4fu3MwTplYaZpxfyg9UXBkd.Vdvr6WjTBmxDDuydpzZnwXovHiYf9rTan015UD40F8qBGpDlQMRz.K2g5iY.zBaWUW0W7drxVzcqR5c8zPcSoz8nqnKDKaYzvyX.686wavA76GrAB_ysdoOPC_lerGslD0wIv8V09AWXHgTxWwaL3t8zRXvy.zZLnoVDlWhBqAJkdNBbLb0Xsx53BRZmvo5EE1ioHCOfq88vC6P5OKNR.vi2csD5jCV1g.MWPANsHyhUuTLdp.2uEMP8l2S9y"
+      "dnt": "1",
+      "referer": "https://bscscan.com/address/0xA49fA5E8106E2d6d6a69E78df9B6A20AaB9c4444",
+      "cookie": "bscscan_offset_datetime=+7; ASP.NET_SessionId=cpqaadlkuq1wv5dswbh34wew; bscscan_switch_token_amount_value=value; bscscan_cookieconsent=True; __cflb=02DiuJNoxEYARvg2sN6bbkRgdyaaxAA7EHVmAeSPBe5jA; cf_clearance=aHD9.YuY28wNkItxpxaxJ2EVf5yqZzZAQ9Wb.6sMO2w-1746848433-1.2.1.1-xmGResG9sFz6Xk4zfJYnBC9FI9HP9h7n5luusYypLjXYPrI53g9g3JuV0VYpHAVJczYEe3j2utR_w2rdd7kynHjQQ1c1nxgn3niRy7GiXcjr5vSu6PXizZR9NBpW0IbbSa4hZZXsAdyDPAh.Kn41mgp7mzdu742zQYQb5HpWD8uhIIDHBK1SBtfK9AEwzPeMHh02sIxFiN38YO_aePQzl4KLW_tVD0MegOAA6b1VHSsFE9IHvTyT3_Zb1.5LQyBxIvSUTioZiCeUdWe5PqIe0XDxtFRzAdPnkbygd2p43Tk1_d35Ee39LZOClc7ebdMttN84B.Ey1btnjoPvqaK1eFksiYW2qJfjW3LxnmJoLYidS4Mb3GnfnnmIe00cvCxM"
    },
    "sol" : {
       ":authority:": "api-v2.solscan.io",

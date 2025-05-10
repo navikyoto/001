@@ -1,7 +1,7 @@
-from urllib.parse import urlencode, urljoin
+from urllib.parse import urlencode
 
 class UrlManager:
-   def __init__(self, address, page):
+   def __init__(self, address, page = 1):
       self.address = address
       self.page = page
       
