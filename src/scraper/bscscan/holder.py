@@ -23,11 +23,15 @@ class BscScan(BaseScraper):
       page = await self.scrape(url=url, proccessor=self.process_text)
       return await self.scrape_element(page.content, element)
     
+   # Perbarui cookies terlebih dahulu dari etherscan dan bscscan
+    
    async def scrape_page(self):
+      print(self.url)
       page = await self.scrape(url=self.url, proccessor=self.process_text)
-      pages = await self.scrape_element(page.content,'span.page-link.text-nowrap')
-      pages_num = [re.findall(r'[0-9]+', page.text) for page in pages]
-      self.pages.append(int(pages_num[0][1]))
+      # pages = await self.scrape_element(page.content,'span.page-link.text-nowrap')
+      # print(page)
+      # pages_num = [re.findall(r'[0-9]+', page.text) for page in pages]
+      # self.pages.append(int(pages_num[0][1]))
       
    async def scrape_info(self) -> None:
       await self.scrape_page()
@@ -57,4 +61,4 @@ class BscScan(BaseScraper):
 tes = BscScan('0xA49fA5E8106E2d6d6a69E78df9B6A20AaB9c4444')
 # print(tes._url())
 
-asyncio.run(tes.scrape_info())
+asyncio.run(tes.scrape_page())

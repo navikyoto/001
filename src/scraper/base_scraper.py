@@ -70,7 +70,7 @@ class BaseScraper:
       proxy = self.proxy_manager.get_proxy() if self.proxy_manager else None
       
       try: 
-         async with session.get(
+         async with session.post(
             url, 
             headers=self.get_header(), 
             proxy=proxy
