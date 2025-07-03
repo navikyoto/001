@@ -49,12 +49,12 @@ class BaseScraper:
         text = await response.text()
         return BeautifulSoup(text, 'html5lib')
 
-   def extract_element(self, soup) -> List[Any]:
-      return BeautifulSoup(soup, 'html5lib')
+   def extract_element(self, soup):
+      soup = BeautifulSoup(soup, 'html5lib')
+      return soup
 
-   async def scrape_element(self, content: str = None, element: str = None) -> None:
+   async def scrape_element(self, content: str = None, element: str = None) -> Any:
       soup = BeautifulSoup(content, 'html5lib')
-      # print(soup)
       content = [page for page in soup.select(element)]
       return content
       ...
@@ -70,7 +70,7 @@ class BaseScraper:
       proxy = self.proxy_manager.get_proxy() if self.proxy_manager else None
       
       try: 
-         async with session.post(
+         async with session.get(
             url, 
             headers=self.get_header(), 
             proxy=proxy

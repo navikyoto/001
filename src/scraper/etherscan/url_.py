@@ -6,7 +6,7 @@ class UrlManager:
       self.page = page
       
    def construct_url(self):
-      base = "https://bscscan.com/token"
+      base = "https://etherscan.io/token"
       
       tokenomics_url = f"{base}/{self.address}"
       
@@ -14,8 +14,8 @@ class UrlManager:
       holder_params = {
          "m": "light",
          "a": self.address,
-         "s": "1000000000000000000000000000",
-         "sid": "6ee5ac0d495901a36d8e78708f81ccde",
+         "s": "100000000000000000000000000",
+         "sid": "145bf8274ccc024069bd6b801cc28331",
          "p": self.page
       }
       

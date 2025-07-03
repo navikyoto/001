@@ -6,24 +6,18 @@ class UrlManager:
       self.page = page
       
    def construct_url(self):
-      base = "https://bscscan.com/token"
+      base = "https://solscan.io/token/"
       
       tokenomics_url = f"{base}/{self.address}"
       
-      holder_path = f"{base}/generic-tokenholders2?"
       holder_params = {
-         "m": "light",
-         "a": self.address,
-         "s": "1000000000000000000000000000",
-         "sid": "6ee5ac0d495901a36d8e78708f81ccde",
-         "p": self.page
+         "page": self.page,
       }
       
-      holder_url = f"{holder_path}{urlencode(holder_params)}"
+      holder_url = f"{base}{self.address}?{urlencode(holder_params)}#holders"
       
       return {
          "base": base,
          "tokenomics": tokenomics_url,
          "holder": holder_url
       }
-      

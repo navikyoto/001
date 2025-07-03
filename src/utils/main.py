@@ -1,58 +1,36 @@
-import nodriver as uc
-import json
+import asyncio
+import aiohttp
 
-async def main():
-    # Start the headless browser
-    browser = await uc.start(headless=True)
+headers = {
+    'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+    'accept-language': "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
+    'Cookie': "bscscan_offset_datetime=+7; bscscan_switch_token_amount_value=value; bscscan_cookieconsent=True; ASP.NET_SessionId=2nsms4ipwdn4nd5zuazyyulr; __cflb=0H28vyb6xVveKGjdV3CYUMgiti5JgVsbAPqujG8Lrg4; cf_chl_rc_ni=1; cf_clearance=BjSR9TRq1zzEuqm4FKGViJE7S0vUhTPOIrML7deUOac-1748344684-1.2.1.1-nOv_tcOCy6zJ8SLXgj7ilQD0PNFngzBZij33RD1girIwzwLMWcUbbG1fdG5pL4zTFWtSt8WcrSBcjPophqHJt_Tzy8nsollffhFLSty7DrwYTYsqJXKL4S__Nu.vzeRNB8z6gFh_AmlLys6UBeQFl.HEGbQxMInJMtH5NyVHsR2Uo3cTrZ9KSYxN18nQSa1Y7p5tQDOhbxg9FIjLTQS3_D7CVCcBA3I4fbDP_ONB7T_S7AcsRp3DeDtiN3L.3.64cmCqtqpIN6sk1EH3WEtb1TEv6jHl2UzJdOO2XLgLatrIH6j6x146gqvzZ2kdm7V57Lj34qL6S4B3qxeCzzxnyBUlzfqMU20BfeTJwsxWuip5jP90uRrb7P2TucD1sfYv",
+    'dnt': "1",
+    'priority': "u=0, i",
+    'referer': "https://bscscan.com/token/0xA49fA5E8106E2d6d6a69E78df9B6A20AaB9c4444",
+    'sec-ch-ua': "'Chromium';v='136', 'Google Chrome';v='136', 'Not.A/Brand';v='99' ",
+    'sec-ch-ua-arch': "'x86'",
+    'sec-ch-ua-bitness': "'64'",
+    'sec-ch-ua-full-version': "'136.0.7103.114'",
+    'sec-ch-ua-full-version-list': "'Chromium';v='136.0.7103.114', 'Google Chrome';v='136.0.7103.114', 'Not.A/Brand';v='99.0.0.0'",
+    'sec-ch-ua-mobile': "?0",
+    'sec-ch-ua-model': "''",
+    'sec-ch-ua-platform': "'Windows'",
+    'sec-ch-ua-platform-version': "'19.0.0'",
+    'sec-fetch-dest': "iframe",
+    'sec-fetch-mode': "navigate",
+    'sec-fetch-site': "same-origin",
+    'upgrade-insecure-requests': "1",
+    'user-agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+}
+
+async def fetch(session, url,):
+    async with session.get(url, headers=headers) as response:
+        return await response.text()
     
-    # Navigate to the Amazon product page
-    page = await browser.get(
-        "https://www.amazon.in/Meta-Quest-Console-Virtual-Reality/dp/B0CB3WXL12"
-    )
-
-    # Extracting product title
-    title_element = await page.select("#productTitle")
-    title = title_element.text.strip() if title_element else None
-
-    # Extracting product price
-    price_element = await page.select("span.a-offscreen")
-    price = price_element.text if price_element else None
-
-    # Extracting product rating
-    rating_element = await page.select("#acrPopover")
-    rating_text = rating_element.attrs.get("title") if rating_element else None
-    rating = rating_text.replace("out of 5 stars", "") if rating_text else None
-
-    # Extracting product image URL
-    image_element = await page.select("#landingImage")
-    image_url = image_element.attrs.get("src") if image_element else None
-
-    # Extracting product description
-    description_element = await page.select("#productDescription")
-    description = description_element.text.strip() if description_element else None
-
-    # Extracting number of reviews
-    reviews_element = await page.select("#acrCustomerReviewText")
-    reviews = reviews_element.text.strip() if reviews_element else None
-
-    # Storing extracted data in a dictionary
-    product_data = {
-        "Title": title,
-        "Price": price,
-        "Description": description,
-        "Image Link": image_url,
-        "Rating": rating,
-        "Number of Reviews": reviews,
-    }
-
-    # Saving data to a JSON file
-    with open("product_data.json", "w", encoding="utf-8") as json_file:
-        json.dump(product_data, json_file, ensure_ascii=False)
-    print("Data has been saved to product_data.json")
-
-    # Stopping the headless browser
-    browser.stop()
-
-if __name__ == "__main__":
-    # Running the main function
-    uc.loop().run_until_complete(main())
+async def scraper(url):
+    async with aiohttp.ClientSession() as session:
+        content = await fetch(session, url)
+        return content
+    
+print(asyncio.run(scraper("https://bscscan.com/token/generic-tokenholders2?m=light&a=0xA49fA5E8106E2d6d6a69E78df9B6A20AaB9c4444&s=1000000000000000000000000000&sid=6ee5ac0d495901a36d8e78708f81ccde&p=1")))
