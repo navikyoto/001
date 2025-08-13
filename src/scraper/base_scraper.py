@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 from dataclasses import field, dataclass
 from typing import Dict, List, Any, Callable, Optional, Union, TypeVar
 
@@ -6,10 +7,11 @@ import aiohttp
 from bs4 import BeautifulSoup
 from tenacity import retry, wait_exponential, stop_after_attempt
 
-from utils.logger import Project_Logger
+from ..utils.logger import Project_Logger
 # from .proxy import ProxyManager, proxy_list
 
-
+PROJECT_ROOT =Path(__file__).resolve().parents[2]
+file_path = PROJECT_ROOT / "src/utils/header.json"
 T = TypeVar('T')
 
 @dataclass
@@ -21,13 +23,13 @@ class ScraperResponse:
    error: Optional[str] = None
 
 class BaseScraper:
-   def __init__(self, use_proxies: bool = True, logger_name: str = __name__):
+   def __init__(self, logger_name: str = __name__):
       self.logger = Project_Logger(logger_name)
       # self.proxy_manager = ProxyManager(proxy_list) if use_proxies else False
       self.name = logger_name
 
    def get_header(self) -> Dict[str, str]:
-      with open('utils/header.json', 'r') as file:
+      with open(file_path, 'r') as file:
          files = json.load(file)
          header = {
             'etherscan.io': files['ether'],
@@ -67,13 +69,13 @@ class BaseScraper:
       ) -> ScraperResponse:
       # self.logger.info(f"FETCHING: {url}")
       
-      proxy = self.proxy_manager.get_proxy() if self.proxy_manager else None
+      # proxy = self.proxy_manager.get_proxy() if self.proxy_manager else None
       
       try: 
          async with session.get(
             url, 
             headers=self.get_header(), 
-            proxy=proxy
+            # proxy=proxy
             ) as response:
             if response.status == 200:
                # self.logger.info(f"SUCCESSFULLY FETCHED: {url} (STATUS: {response.status})")

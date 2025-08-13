@@ -24,7 +24,7 @@
   "bsc": {
     "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
     "accept-language": "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
-    "Cookie": "bscscan_offset_datetime=+7; bscscan_switch_token_amount_value=value; bscscan_cookieconsent=True; ASP.NET_SessionId=2nsms4ipwdn4nd5zuazyyulr; __cflb=0H28vyb6xVveKGjdV3CYUMgiti5JgVsbAPqujG8Lrg4; cf_clearance=CZuGVCk0tmCoPsNz32RD6hAbwm8LP3lKwplGJoVJSHg-1748348872-1.2.1.1-zo_YvhG05S_uoDVjQZ2tujweyf66bS3iyypJBoMpLYYAtd.qvXdqYc0tTXGgFWhcEkhveqEdWBvkxYVVS9sDoN6.gCJLgX9OD1PtJ1I9SxGCp3HKUFctMWYs5cpobORweVl1h0OcC6MrqbK3hbsYzweZaJk4vB1A_4o0nuVqu2dUKjkyRXpYdP8RRk65yhh7NqRxBHUlI7_3V_zNd8Y3AklvIcJsLYc4to8hn.gE2SYBKVcEKbJh2s0mBBNYkMzLHZe3mmTH6gnI0ZzPbqj8250yS0cpOeQr3bfauXIC2pL4RSmksrqjxpdRT495zphp6kswlKmUBrlh_DToQ.vfO4lIZaPha3AMq6M5kzlEV_8OziOWejive9p9q3UEjnGF",
+    "Cookie": "aASP.NET_SessionId=p0njckfb0mpzjmaaw5jyqf5c; bscscan_offset_datetime=+7; __cflb=02DiuJNoxEYARvg2sN6bbkRgdyaaxAA7ECLmEMYN23jkY; bscscan_switch_token_amount_value=value; cf_clearance=3fMTaTlEFJx7LGiMMonmk9UJ336h9BmOsf0G8D1abp0-1754827923-1.2.1.1-Kq.ljqYrlHFI.itC0tO9.TKRrcvLKIGrpA6vF6MYZ4YemfjbeGVGaxRSJuvUTqkikzu5hCcp65FjfQQJJ_sGelrTaQWp2OOeGi7ROhm775udTeSCiv5W1kH3HjYBtZSf.eeUGlkgZCeuJDfI6vY6q1N32bZ3b5df4cs6iFkMd4BGf82oopJw1nz2XBBj8rdO19i1DXO4hEpT0j22J3NzNYJnOQZTXh8BHFReZQLnbCw",
     "dnt": "1",
     "priority": "u=0, i",
     "sec-ch-ua": "'Chromium';v='136', 'Google Chrome';v='136', 'Not.A/Brand';v='99' ",
