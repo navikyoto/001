@@ -7,14 +7,16 @@ from tenacity import retry, wait_exponential, stop_after_attempt
 
 # coloredlogs.install(level='DEBUG')
 
-class Project_Logger():
-   def __init__(self, logger_name):
-      logging.basicConfig(
+logging.basicConfig(
          level= logging.INFO,
          format="%(message)s",
          datefmt="[%X]",
-         handlers=[RichHandler()]
+         handlers=[RichHandler(rich_tracebacks=True, markup=True, enable_link_path=False)]
       )
+
+class Project_Logger():
+   def __init__(self, logger_name):
+      
       # logging.basicConfig(
       #    level = logging.INFO,
       #    format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -25,6 +27,8 @@ class Project_Logger():
       self.logger = logging.getLogger(logger_name)
       file_handler = logging.FileHandler(f"{logger_name}.log")
       self.logger.addHandler(file_handler)
+
+      # return self.logger
 
 
    @retry(stop = stop_after_attempt(3),
@@ -44,14 +48,14 @@ class Project_Logger():
          raise
 
    def info(self, massage: str) -> None:
-      os.system('clear')
+      # os.system('clear')
       self.logger.info(massage)
 
    def error(self, massage: str) -> None:
-      os.system('clear')
+      # os.system('clear')
 
       self.logger.error(massage)
 
    def warning(self, massage: str) -> None:
-      os.system('clear')
+      # os.system('clear')
       self.logger.warning(massage)

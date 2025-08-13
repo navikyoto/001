@@ -6,13 +6,18 @@ from typing import Dict, List, Any, Callable, Optional, Union, TypeVar
 import aiohttp
 from bs4 import BeautifulSoup
 from tenacity import retry, wait_exponential, stop_after_attempt
+from rich.logging import RichHandler
 
-from ..utils.logger import Project_Logger
+from utils.logger import Project_Logger
 # from .proxy import ProxyManager, proxy_list
 
-PROJECT_ROOT =Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 file_path = PROJECT_ROOT / "src/utils/header.json"
 T = TypeVar('T')
+
+# TODO doc everything from and all function
+# TODO add retry maximum
+# TODO fix logging in this script
 
 @dataclass
 class ScraperResponse:
@@ -27,6 +32,8 @@ class BaseScraper:
       self.logger = Project_Logger(logger_name)
       # self.proxy_manager = ProxyManager(proxy_list) if use_proxies else False
       self.name = logger_name
+
+      ...
 
    def get_header(self) -> Dict[str, str]:
       with open(file_path, 'r') as file:
@@ -66,7 +73,7 @@ class BaseScraper:
       session: aiohttp.ClientSession, 
       url: str, 
       processor: Callable[[aiohttp.ClientResponse], T],
-      ) -> ScraperResponse:
+      ) -> ScraperResponse:        
       # self.logger.info(f"FETCHING: {url}")
       
       # proxy = self.proxy_manager.get_proxy() if self.proxy_manager else None
@@ -113,6 +120,7 @@ class BaseScraper:
          # self.logger.info(f"STARTING SCRAPING: {url}")
          async with aiohttp.ClientSession() as session:
             response = await self.fetch(session, url, proccessor)
+            # self.logger.info(f"FETCHING: {url}")
             return response
       except Exception as error:
          error_msg = f"Session ERROR for {url}: {str(error)}"
