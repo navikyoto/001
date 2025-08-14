@@ -62,13 +62,23 @@ class BscScan(BaseScraper):
       Scraping page using `.scrape` from Basescraper and `.scrape_element` and return the total page.
       """
 
-      page = await self.scrape(url=self.url, proccessor=self.process_text)
-      pages = await self.scrape_element(page.content,'span.page-link.text-nowrap')
-      pages_num = [re.findall(r'[0-9]+', page.text) for page in pages]
-      self.pages.append(int(pages_num[0][1]))
+      try:
 
-      self.logger.info(f"FETCHING: {pages_num[0][1]} pagination")
-      self.logger.info(f"SUCCESSFULLY FETCHED: {pages_num[0][1]} web pagination (STATUS: {page.status})")
+         self.logger.info(f"FETCHING: web pagination")
+         page = await self.scrape(url=self.url, proccessor=self.process_text)
+         
+         if page.status == 200:
+            pages = await self.scrape_element(page.content,'span.page-link.text-nowrap')
+            print(pages)
+            pages_num = [re.findall(r'[0-9]+', page.text) for page in pages]
+            self.pages.append(int(pages_num[0][1]))
+            self.logger.info(f"SUCCESSFULLY FETCHED: {pages_num[0][1]} web pagination (STATUS: {page.status})")
+
+         else:
+            self.logger.error(f"FAILED FETCHING: HTTP ERROR {response.status}")
+
+      except Exception as error:
+         self.logger.warning(f"ERROR {str(error)}")
 
    async def scrape_info(self):
 
@@ -77,32 +87,34 @@ class BscScan(BaseScraper):
 	   returning percantage and holder.
       """
 
-      await self.scrape_page()
-      self.logger.info(f"FETCHING INFORMATION: {self.pages[0]} url")
-      result = {}
-      for pages in range(self.pages[0]):
-         self.page = pages+1
-         self.url = self._url()
-         response = await self.scrape(url=self.url, proccessor=self.process_text)
-         task = [
-            self.return_(self.url, '.d-flex.align-items-center.gap-1'),
-            self.return_(self.url, 'tbody.align-middle.text-nowrap .progress-bar.bg-primary'),
-         ]
+      try:
+         await self.scrape_page()
+         self.logger.info(f"FETCHING INFORMATION: {self.pages[0]} url")
+         result = {}
+         for pages in range(self.pages[0]):
+            self.page = pages+1
+            self.url = self._url()
+            response = await self.scrape(url=self.url, proccessor=self.process_text)
+            if response.status == 200:
+               task = [
+                  self.return_(self.url, '.d-flex.align-items-center.gap-1'),
+                  self.return_(self.url, 'tbody.align-middle.text-nowrap .progress-bar.bg-primary'),
+               ]
+               
+               holders, percentages = await asyncio.gather(*task)
+               holder = [str(holder.text).strip() for holder in holders]
+               # print(holder)
+               result.update({
+                  self.extract_element(str(holder)).text: str(percent['aria-valuenow'])
+                  for holder, percent in zip(holder, percentages)
+               })
+               self.holder = result
+               self.logger.info(f"SUCCESSFULLY FETCHED INFORMATION: {self.pages[0]} url (STATUS: {response.status})")
          
-         holders, percentages = await asyncio.gather(*task)
-         holder = [str(holder.text).strip() for holder in holders]
-         # print(holder)
-         result.update({
-            self.extract_element(str(holder)).text: str(percent['aria-valuenow'])
-            for holder, percent in zip(holder, percentages)
-         })
-         self.holder = result
-      
-      self.logger.info(f"SUCCESSFULLY FETCHED INFORMATION: {self.pages[0]} url (STATUS: {response.status})")
-      
-      # os.system("clear")   
-      return self.holder
-      
+         # os.system("clear")   
+         return self.holder
+      except Exception as error:
+         self.logger.warning(f"ERROR {str(error)}")
 
 # asyncio.run(tes.scrape_page())
 if __name__ == "__main__":
