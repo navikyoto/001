@@ -107,11 +107,12 @@ class BaseScraper:
       except Exception as e:
          error_msg = f"FETCH FAILED {url}: {str(e)}"
          self.logger.info(error_msg)
-            
+
+   @retry(stop=stop_after_attempt(2), reraise=True)
    async def scrape(
       self, 
       url: str, 
-      proccessor: Callable[[aiohttp.ClientResponse], T] = None,
+      proccessor: Callable[[aiohttp.ClientResponse], T],
       ) -> ScraperResponse:
       if proccessor is None:
          proccessor = self.process_soup

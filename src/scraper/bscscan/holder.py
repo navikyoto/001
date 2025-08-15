@@ -1,5 +1,6 @@
 import re, os
 from collections import defaultdict
+from typing import Any
 
 import asyncio
 
@@ -7,10 +8,12 @@ import asyncio
 from ..base_scraper import BaseScraper
 from .url_ import UrlManager
 
+
+# Renew the cookies through header.json for bscscan before running the script!
 class BscScan(BaseScraper):
    
    """
-   Scraper of Binance token using own lib to scraper all necessary need.
+   Scraper of Binance token using own lib, to scrape token information.
 		
 		Attributes:
 				address: Meme coin BEP-20 (Binance) Based address
@@ -19,8 +22,9 @@ class BscScan(BaseScraper):
    """
          
    def __init__(self, address, use_proxies = False ,logger_name = "bscscan.io"):
+      
       """
-      Initialize the EtherScan scraper.
+      Initialize the BscScan scraper.
       
       Args:
          address (str): Binance token address to scrape
@@ -45,7 +49,7 @@ class BscScan(BaseScraper):
       tes = UrlManager(self.address, self.page)
       return tes.construct_url()["holder"]
    
-   async def return_(self, url, element) -> None:
+   async def return_(self, url, element) -> list:
       
       """
       Returning element from a page, `proccessor` can be changed
@@ -54,8 +58,6 @@ class BscScan(BaseScraper):
       page = await self.scrape(url=url, proccessor=self.process_text)
       return await self.scrape_element(page.content, element)
     
-   # Perbarui cookies terlebih dahulu dari etherscan dan bscscan
-    
    async def scrape_page(self):
       
       """
@@ -63,7 +65,6 @@ class BscScan(BaseScraper):
       """
 
       try:
-
          self.logger.info(f"FETCHING: web pagination")
          page = await self.scrape(url=self.url, proccessor=self.process_text)
          
@@ -74,7 +75,7 @@ class BscScan(BaseScraper):
             self.logger.info(f"SUCCESSFULLY FETCHED: {pages_num[0][1]} web pagination (STATUS: {page.status})")
 
          else:
-            self.logger.error(f"FAILED FETCHING: HTTP ERROR {response.status}")
+            self.logger.error(f"FAILED FETCHING: HTTP ERROR {page.status}")
 
       except Exception as error:
          self.logger.warning(f"ERROR {str(error)}")
@@ -82,8 +83,11 @@ class BscScan(BaseScraper):
    async def scrape_info(self):
 
       """
-      Scraping all info from all page that got scraped from scrape_page function
-	   returning percantage and holder.
+      Scraping all info from all page that got scraped from `scrape_page` function returning percantage and holder.
+
+         Args:
+            percentage (str): An percentages of token hold by user.
+            holder (str): Holder token address.
       """
 
       try:
@@ -112,15 +116,12 @@ class BscScan(BaseScraper):
                self.logger.error(f"FETCHED FAILED: {response.status}")
 
          self.logger.info(f"SUCCESSFULLY FETCHED INFORMATION: {self.pages[0]} url (STATUS: {response.status})")
-         
-         # os.system("clear")   
          return self.holder
+      
       except Exception as error:
          self.logger.warning(f"ERROR {str(error)}")
 
-# asyncio.run(tes.scrape_page())
 if __name__ == "__main__":
    tes = BscScan('0xA49fA5E8106E2d6d6a69E78df9B6A20AaB9c4444')
-   asyncio.run(tes.scrape_info())
+   print(asyncio.run(tes.scrape_info()))
    ...
-# print(asyncio.run(tes.scrape_info()))
