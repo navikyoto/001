@@ -69,7 +69,6 @@ class BscScan(BaseScraper):
          
          if page.status == 200:
             pages = await self.scrape_element(page.content,'span.page-link.text-nowrap')
-            print(pages)
             pages_num = [re.findall(r'[0-9]+', page.text) for page in pages]
             self.pages.append(int(pages_num[0][1]))
             self.logger.info(f"SUCCESSFULLY FETCHED: {pages_num[0][1]} web pagination (STATUS: {page.status})")
@@ -109,7 +108,10 @@ class BscScan(BaseScraper):
                   for holder, percent in zip(holder, percentages)
                })
                self.holder = result
-               self.logger.info(f"SUCCESSFULLY FETCHED INFORMATION: {self.pages[0]} url (STATUS: {response.status})")
+            else:
+               self.logger.error(f"FETCHED FAILED: {response.status}")
+
+         self.logger.info(f"SUCCESSFULLY FETCHED INFORMATION: {self.pages[0]} url (STATUS: {response.status})")
          
          # os.system("clear")   
          return self.holder

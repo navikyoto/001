@@ -44,7 +44,7 @@ class Project_Logger():
                   self.logger.warning(f"Non-200 response: {response.status}")
                   return None
       except Exception as e:
-         self.logger.error(f"Fetch failed: {e}")
+         self.logger.error(f"Fetish failed: {e}")
          raise
 
    def info(self, massage: str) -> None:
