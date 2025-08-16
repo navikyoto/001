@@ -5,9 +5,10 @@ from rich.logging import RichHandler
 
 from tenacity import retry, wait_exponential, stop_after_attempt
 
+# Basic configuration for logging
 logging.basicConfig(
          level= logging.INFO,
-         format="%(message)s",
+         format="%(name)s - %(message)s",
          datefmt="[%X]",
          handlers=[RichHandler(rich_tracebacks=True, markup=True, enable_link_path=False)]
       )
@@ -35,15 +36,11 @@ class Project_Logger():
          self.logger.error(f"Fetish failed: {e}")
          raise
 
-   def info(self, massage: str) -> None:
-      # os.system('clear')
-      self.logger.info(massage)
+   def info(self, massage: str, *args, **kwargs) -> None:
+      self.logger.info(massage, *args, stacklevel=2, **kwargs)
 
-   def error(self, massage: str) -> None:
-      # os.system('clear')
+   def error(self, massage: str, *args, **kwargs) -> None:
+      self.logger.error(massage, args, stacklevel=2, **kwargs)
 
-      self.logger.error(massage)
-
-   def warning(self, massage: str) -> None:
-      # os.system('clear')
-      self.logger.warning(massage)
+   def warning(self, massage: str, *args, **kwargs) -> None:
+      self.logger.warning(massage, *args, stacklevel=2, **kwargs)

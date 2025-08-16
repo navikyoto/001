@@ -24,7 +24,7 @@
   "bsc": {
     "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
     "accept-language": "en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7",
-    "Cookie": "aASP.NET_SessionId=p0njckfb0mpzjmaaw5jyqf5c; bscscan_offset_datetime=+7; __cflb=02DiuJNoxEYARvg2sN6bbkRgdyaaxAA7ECLmEMYN23jkY; bscscan_switch_token_amount_value=value; cf_clearance=3fMTaTlEFJx7LGiMMonmk9UJ336h9BmOsf0G8D1abp0-1754827923-1.2.1.1-Kq.ljqYrlHFI.itC0tO9.TKRrcvLKIGrpA6vF6MYZ4YemfjbeGVGaxRSJuvUTqkikzu5hCcp65FjfQQJJ_sGelrTaQWp2OOeGi7ROhm775udTeSCiv5W1kH3HjYBtZSf.eeUGlkgZCeuJDfI6vY6q1N32bZ3b5df4cs6iFkMd4BGf82oopJw1nz2XBBj8rdO19i1DXO4hEpT0j22J3NzNYJnOQZTXh8BHFReZQLnbCw",
+    "Cookie": "cf_clearance=TQ1yFxOx8f_jSRfcH0JybypzM0Q8XmUDJobefnvHRDQ-1755289525-1.2.1.1-EzfFF5AhcvAgRwt3.7dgVsdwjtbfSdyW7meO.D27XqdPffLsZQBY2sQuCOb6syOa_f0ruU9ZW6EGNgPInqkzJK9.LOA6ccIDyv5PEw1yVAcCq7Ithb57mqO_X.XGdNLs5If5H6RcmRLs_fk.AgxS0N8nmRE8NU9dNojXi9ABmBu9umeoLp2IuOO.zZzoIgRdSQe7E9MYsM9O.EWpSqffysw_eYhDfuxZH3eBFCBFT8s; _ga_PQY6J2Q8EP=GS2.1.s1755289524$o4$g0$t1755289524$j60$l0$h0; _ga=GA1.1.1284901429.1746625826; bscscan_offset_datetime=+7; bscscan_switch_token_amount_value=value; bitmedia_fid=eyJmaWQiOiJjZjI0N2U0ZjZlNTA4MzBjODNiNDc4ZmFiNjBhNjA3OSIsImZpZG5vdWEiOiI5Zjg3Y2QwYTAzYjhjMTdiNDBiNWViOThmMjZmZGY4MSJ9; bscscan_cookieconsent=True; ASP.NET_SessionId=fbjntri3jub0vknjdrfjcmzs; __cflb=02DiuJNoxEYARvg2sN6bbkRgdyaaxAA7EZp8y9cnNCD2t",
     "dnt": "1",
     "priority": "u=0, i",
     "sec-ch-ua": "'Chromium';v='136', 'Google Chrome';v='136', 'Not.A/Brand';v='99' ",

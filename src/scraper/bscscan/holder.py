@@ -124,4 +124,5 @@ class BscScan(BaseScraper):
 if __name__ == "__main__":
    tes = BscScan('0xA49fA5E8106E2d6d6a69E78df9B6A20AaB9c4444')
    print(asyncio.run(tes.scrape_info()))
+   # asyncio.run(tes.scrape_page())
    ...

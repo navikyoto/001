@@ -5,14 +5,16 @@ from typing import Dict, List, Any, Callable, Optional, Union, TypeVar
 
 import aiohttp
 from bs4 import BeautifulSoup
-from tenacity import retry, wait_exponential, stop_after_attempt
 from rich.logging import RichHandler
+from tenacity import retry, wait_exponential, stop_after_attempt
 
 from utils.logger import Project_Logger
 # from .proxy import ProxyManager, proxy_list
 
+# Utils related import header.json 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 file_path = PROJECT_ROOT / "src/utils/header.json"
+
 T = TypeVar('T')
 
 # TODO doc everything from and all function
@@ -28,7 +30,23 @@ class ScraperResponse:
    error: Optional[str] = None
 
 class BaseScraper:
+
+   """
+   Base scraper for token scraper ensuring easy to maintain and modularization
+
+      Attributes:
+         logger_name : Logger name for each script
+   """
+   
    def __init__(self, logger_name: str = __name__):
+
+      """
+      Initialize the Base scraper
+
+         Args:
+            logger_name (str): Logger name
+      """
+
       self.logger = Project_Logger(logger_name)
       # self.proxy_manager = ProxyManager(proxy_list) if use_proxies else False
       self.name = logger_name
@@ -36,6 +54,11 @@ class BaseScraper:
       ...
 
    def get_header(self) -> Dict[str, str]:
+
+      """
+      
+      """
+
       with open(file_path, 'r') as file:
          files = json.load(file)
          header = {
