@@ -37,7 +37,7 @@ class BscScan(BaseScraper):
       self.pages = []        
       self.address = address
       self.url = self._url()
-      self.holder: defaultdict = defaultdict(str)
+      self.holder = defaultdict(str)
       
    def _url(self):
       
@@ -94,6 +94,7 @@ class BscScan(BaseScraper):
          await self.scrape_page()
          self.logger.info(f"FETCHING INFORMATION: {self.pages[0]} url")
          result = {}
+         global response
          for pages in range(self.pages[0]):
             self.page = pages+1
             self.url = self._url()
@@ -106,7 +107,6 @@ class BscScan(BaseScraper):
                
                holders, percentages = await asyncio.gather(*task)
                holder = [str(holder.text).strip() for holder in holders]
-               # print(holder)
                result.update({
                   self.extract_element(str(holder)).text: str(percent['aria-valuenow'])
                   for holder, percent in zip(holder, percentages)
@@ -115,7 +115,7 @@ class BscScan(BaseScraper):
             else:
                self.logger.error(f"FETCHED FAILED: {response.status}")
 
-         self.logger.info(f"SUCCESSFULLY FETCHED INFORMATION: {self.pages[0]} url (STATUS: {response.status})")
+         self.logger.info(f"SUCCESSFULLY FETCHED INFORMATION: {self.pages[0]} url (STATUS: {response.status})") #type: ignore
          return self.holder
       
       except Exception as error:
@@ -124,5 +124,4 @@ class BscScan(BaseScraper):
 if __name__ == "__main__":
    tes = BscScan('0xA49fA5E8106E2d6d6a69E78df9B6A20AaB9c4444')
    print(asyncio.run(tes.scrape_info()))
-   # asyncio.run(tes.scrape_page())
    ...

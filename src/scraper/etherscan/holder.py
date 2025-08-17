@@ -35,7 +35,7 @@ class EtherScan(BaseScraper):
       self.pages = []
       self.address = address
       self.url = self._url()
-      self.holder: defaultdict = defaultdict(str)
+      self.holder = defaultdict(str)
 
    def _url(self):
             
@@ -70,8 +70,9 @@ class EtherScan(BaseScraper):
          
          if page.status == 200:
             pages = await self.scrape_element(page.content,'span.page-link.text-nowrap')
-            pages_num = [re.findall(r'[0-9]+', page.text) for page in pages]
-            self.pages.append(int(pages_num[0][1]))
+            print(pages)
+            # pages_num = [re.findall(r'[0-9]+', page.text) for page in pages]
+            # self.pages.append(int(pages_num[0][1]))
 
          else:
             self.logger.error(f"FAILED FETCHING: HTTP ERROR {page.status}")
@@ -123,5 +124,6 @@ class EtherScan(BaseScraper):
 
 if __name__ == "__main__":
    tes = EtherScan("0x41D06390b935356b46aD6750bdA30148Ad2044A4")
-   print(asyncio.run(tes.scrape_info()))
+   # print(asyncio.run(tes.scrape_info()))
+   asyncio.run(tes.scrape_page())
    ...

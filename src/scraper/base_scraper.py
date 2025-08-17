@@ -17,9 +17,9 @@ file_path = PROJECT_ROOT / "src/utils/header.json"
 
 T = TypeVar('T')
 
-# TODO doc everything from and all function
-# TODO add retry maximum
-# TODO fix logging in this script
+# TODO doc everything from and all function (done)
+# TODO add retry maximum (done)
+# TODO fix logging in this script (done)
 
 @dataclass
 class ScraperResponse:
@@ -48,7 +48,6 @@ class BaseScraper:
       """
 
       self.logger = Project_Logger(logger_name)
-      # self.proxy_manager = ProxyManager(proxy_list) if use_proxies else False
       self.name = logger_name
 
       ...
@@ -56,7 +55,10 @@ class BaseScraper:
    def get_header(self) -> Dict[str, str]:
 
       """
-      
+      Providing header for each specific scraper
+
+         Args:
+            header (json): An header for scraper
       """
 
       with open(file_path, 'r') as file:
@@ -72,6 +74,22 @@ class BaseScraper:
         """Process response as JSON"""
         return await response.json()
 
+   async def scrape(
+      self, 
+      url: str, 
+      proccessor: Callable[[aiohttp.ClientResponse], T],
+      ) -> ScraperResponse:
+
+      """
+      Custom asyncronous scraping using aiohttp and custom log
+
+         Args:
+            url (str): url given by user
+            processor (Callable[[aiohttp.ClientResponse], T]): Output Processor such as, `text`, `json` and `soup_object`
+      """
+
+      if proccessor is None:
+         proccessor = self.process_soup
    async def process_text(self, response: aiohttp.ClientResponse) -> str:
         """Process response as TEXT"""
         return await response.text()
@@ -85,10 +103,26 @@ class BaseScraper:
       soup = BeautifulSoup(soup, 'html5lib')
       return soup
 
-   async def scrape_element(self, content: str = None, element: str = None) -> Any:
+   async def scrape_element(
+         self, 
+         content: Optional[str] = None, 
+         element: Optional[str] = None
+         ) -> Any:
+      
+      """
+      Scraping element from given html tag
+
+         Args:
+            content (str): Content of html tag
+            element (str): Element of html tag
+
+      Returning the element in list form
+      """
+
+      if content is None:
+         return []
       soup = BeautifulSoup(content, 'html5lib')
-      content = [page for page in soup.select(element)]
-      return content
+      return [page for page in soup.select(element)] if element else []
       ...
 
    async def fetch(
@@ -96,21 +130,24 @@ class BaseScraper:
       session: aiohttp.ClientSession, 
       url: str, 
       processor: Callable[[aiohttp.ClientResponse], T],
-      ) -> ScraperResponse:        
-      # self.logger.info(f"FETCHING: {url}")
+      ) -> ScraperResponse: #type: ignore
       
-      # proxy = self.proxy_manager.get_proxy() if self.proxy_manager else None
-      
+      """
+      Custom asyncronous fetching using aiohttp and custom log
+
+         Args:
+            session (iohttp.ClientSession): https client session
+            url (str): url given by user
+            processor (Callable[[aiohttp.ClientResponse], T]): Output Processor such as, `text`, `json` and `soup_object`
+      """
+
       try: 
          async with session.get(
             url, 
             headers=self.get_header(), 
-            # proxy=proxy
             ) as response:
             if response.status == 200:
-               # self.logger.info(f"SUCCESSFULLY FETCHED: {url} (STATUS: {response.status})")
-               content = await processor(response)
-               # return response.headers
+               content = await processor(response) #type: ignore
                return ScraperResponse(
                   status=response.status,
                   content=content,
@@ -137,14 +174,21 @@ class BaseScraper:
       url: str, 
       proccessor: Callable[[aiohttp.ClientResponse], T],
       ) -> ScraperResponse:
+
+      """
+      Custom asyncronous scraping using aiohttp and custom log
+
+         Args:
+            url (str): url given by user
+            processor (Callable[[aiohttp.ClientResponse], T]): Output Processor such as, `text`, `json` and `soup_object`
+      """
+
       if proccessor is None:
          proccessor = self.process_soup
          
       try:
-         # self.logger.info(f"STARTING SCRAPING: {url}")
          async with aiohttp.ClientSession() as session:
             response = await self.fetch(session, url, proccessor)
-            # self.logger.info(f"FETCHING: {url}")
             return response
       except Exception as error:
          error_msg = f"Session ERROR for {url}: {str(error)}"
