@@ -14,7 +14,7 @@ class EtherScan(BaseScraper):
    Scraper of Binance token using own lib, to scrape token information.
 		
 		Attributes:
-				address: Meme coin ERC-20 (Ethereum) Based address.
+				address: Meme coin ERC-20 (Ethereum) based address.
 				use_proxies: If True, use proxy for requests (default: False) currently not working.
 				logger_name: logger name, for addresing error.
    """
