@@ -2,6 +2,7 @@ import re
 import json
 from dataclasses import dataclass
 from collections import defaultdict
+from typing import Any
 
 import asyncio
 from bs4 import BeautifulSoup
@@ -11,6 +12,7 @@ from .url_ import UrlManager
 
 @dataclass
 class Tokenomics:
+   name: str
    price: int
    holder: str
    total_transfers: str
@@ -19,7 +21,7 @@ class Tokenomics:
    onchain_market_cap: str
    circulating_supply_market_cap: str
 
-class BscScan(BaseScraper):
+class tknomics(BaseScraper):
 
    """
    Scraper anything related to Token information from website
@@ -56,20 +58,26 @@ class BscScan(BaseScraper):
       url = UrlManager(self.address)
       return url.construct_url()['tokenomics']
    
-   async def return_(self, page, element):
+   async def return_(self, page, element) -> Any:
 
       """
       Returning element from a page, `proccessor` can be changed
       """
 
-      data = await self.scrape_element(page.content, element)
-      return data[0].text.strip()
+      try:
+         data = await self.scrape_element(page.content, element)
+         return data[0].text.strip()
+      
+      except Exception as error:
+         self.logger.error(f"ERROR {str(error)}")
+      
 
    async def scrape_page(self):
 
       """
       Fetching information from bscscan.io and return information such as
          Args:
+            name: Name of token
             price: An price of token.
             holder: Address holder.
             total_transfer: Total trasfer of token.
@@ -82,8 +90,10 @@ class BscScan(BaseScraper):
       try:
          page = await self.scrape(url=self.url, proccessor=self.process_text)
          if page.status == 200:
+
             self.logger.info(f"FETCHING INFORMATION")
-            return Tokenomics(
+            return [Tokenomics(
+               name = await self.return_(page, 'section.container-xxl span.fs-base.fw-medium'),
                price = await self.return_(page, '.card.h-100 span[data-bs-html=true]'),
                holder = await self.return_(page, '.d-flex.flex-wrap.gap-2 div'),
                total_transfers = await self.return_(page, 'div #totaltxns'),
@@ -91,14 +101,11 @@ class BscScan(BaseScraper):
                max_total_supply = await self.return_(page, 'div span.hash-tag.text-truncate'),
                onchain_market_cap = await self.return_(page, '#ContentPlaceHolder1_tr_marketcap div'),
                circulating_supply_market_cap = await self.return_(page, '#ContentPlaceHolder1_tr_marketcap div'),
-            ), self.logger.info(f"SUCCESSFULLY FETCHED INFORMATION: (STATUS: {page.status})")
+               ), self.logger.info(f"SUCCESSFULLY FETCHED INFORMATION: (STATUS: {page.status})") ]
+         
          else:
             self.logger.error(f"FETCHING FAILED: {page.status}")
 
 
       except Exception as error:
          self.logger.error(f"ERROR {str(error)}")
-
-if __name__ == "__main__":
-   tes = BscScan("0xAaEE2036cD24203e907d34F4b188977d4c20f4B3")
-   print(asyncio.run(tes.scrape_page()))

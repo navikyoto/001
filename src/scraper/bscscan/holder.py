@@ -1,12 +1,16 @@
 import re, os
 from collections import defaultdict
 from typing import Any
+from pathlib import Path
 
 import asyncio
+import pandas as pd
+from bs4 import BeautifulSoup
 
 # base_scraper and url_manager from own lib
 from ..base_scraper import BaseScraper
 from .url_ import UrlManager
+from .tokenomics import tknomics
 
 
 # Renew the cookies through header.json for bscscan before running the script!
@@ -36,8 +40,8 @@ class BscScan(BaseScraper):
       self.page = 1
       self.pages = []        
       self.address = address
-      self.url = self._url()
-      self.holder = defaultdict(str)
+      self.url = "https://bscscan.com/token/generic-tokenholders2?a=0xe6DF05CE8C8301223373CF5B969AFCb1498c5528&sid=&m=light&s=3379999520000000000000000&p=1"
+      self.tokenomics = tknomics(self.address)
       
    def _url(self):
       
@@ -90,38 +94,69 @@ class BscScan(BaseScraper):
             holder (str): Holder token address.
       """
 
-      try:
-         await self.scrape_page()
-         self.logger.info(f"FETCHING INFORMATION: {self.pages[0]} url")
-         result = {}
-         global response
-         for pages in range(self.pages[0]):
-            self.page = pages+1
-            self.url = self._url()
-            response = await self.scrape(url=self.url, proccessor=self.process_text)
-            if response.status == 200:
-               task = [
-                  self.return_(self.url, '.d-flex.align-items-center.gap-1'),
-                  self.return_(self.url, 'tbody.align-middle.text-nowrap .progress-bar.bg-primary'),
-               ]
-               
-               holders, percentages = await asyncio.gather(*task)
-               holder = [str(holder.text).strip() for holder in holders]
-               result.update({
-                  self.extract_element(str(holder)).text: str(percent['aria-valuenow'])
-                  for holder, percent in zip(holder, percentages)
-               })
-               self.holder = result
-            else:
-               self.logger.error(f"FETCHED FAILED: {response.status}")
+      bsc = await self.tokenomics.scrape_page()
+      files = f"../src/result/bsc - {bsc[0].name}.csv" #type: ignore
 
-         self.logger.info(f"SUCCESSFULLY FETCHED INFORMATION: {self.pages[0]} url (STATUS: {response.status})") #type: ignore
-         return self.holder
-      
+      hold_acc = []
+
+      try:
+
+          # Checking if file already exists
+         if Path(files).exists():
+            os.system("clear")
+            self.logger.info("FILE ALREADY EXISTS")
+
+         else:
+            # Updating the scrape_page() function
+            await self.scrape_page()
+            self.logger.info(f"FETCHING INFORMATION: {self.pages[0]} url")
+
+            for pages in range(self.pages[0]):
+               self.page = pages+1
+               self.url = self._url()
+               response = await self.scrape(url=self.url, proccessor=self.process_text)
+               if response.status == 200:
+                  task = [
+                     self.return_(self.url, '.d-flex.align-items-center.gap-1 a.js-clipboard.link-secondary'),
+                     self.return_(self.url, 'tbody.align-middle.text-nowrap tr td:nth-of-type(3) span[data-bs-toggle]'),
+                     self.return_(self.url, 'tbody.align-middle.text-nowrap .progress-bar.bg-primary'),
+                     self.return_(self.url, 'tbody.align-middle.text-nowrap tr td:nth-of-type(5)')
+                  ]
+
+                  holders, quantity, percentages, values = await asyncio.gather(*task)
+               
+                  items = zip(holders, quantity, percentages, values) if values else zip(holders, quantity, percentages)
+                  
+                  for i, elems in enumerate(items):
+                     hold, qty, perc, *val = elems
+                     data = {
+                        "address": self.extract_element(str(hold["data-clipboard-text"])).text,
+                        "quantity": self.extract_element(str(qty)).text,
+                        "percetages": str(perc['aria-valuenow']),
+                     }
+                     hold_acc.append(data)
+
+                     if val:  # only if values exist
+                        data["value"] = self.extract_element(str(val[0])).text
+                        hold_acc.append(data)
+                  
+               else:
+                  self.logger.error(f"FETCHED FAILED: {response.status}")
+
+            if not values: #type: ignore
+               self.logger.info("THIS TOKEN HAS NO VALUE")
+
+            self.logger.info(f"SUCCESSFULLY FETCHED INFORMATION: {self.pages[0]} url (STATUS: {response.status})") #type: ignore
+         
+            df = pd.DataFrame(hold_acc)
+            df.to_csv(files) 
+
+            self.logger.info("FILE SAVED SUCCESSFULLY IN result FOLDER")
+
       except Exception as error:
          self.logger.warning(f"ERROR {str(error)}")
 
+
 if __name__ == "__main__":
    tes = BscScan('0xA49fA5E8106E2d6d6a69E78df9B6A20AaB9c4444')
-   print(asyncio.run(tes.scrape_info()))
-   ...
+   asyncio.run(tes.scrape_info())
