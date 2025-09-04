@@ -1,17 +1,21 @@
 import re, os
-from collections import defaultdict
-from typing import Any
+import regex
 from pathlib import Path
 
 import asyncio
 import pandas as pd
-from bs4 import BeautifulSoup
+from pydantic import BaseModel, fields, constr
 
 # base_scraper and url_manager from own lib
 from ..base_scraper import BaseScraper
 from .url_ import UrlManager
 from .tokenomics import tknomics
 
+class Data(BaseModel):
+   address: str
+   quantity: float
+   percentages: float
+   value: float | None = None
 
 # Renew the cookies through header.json for bscscan before running the script!
 class BscScan(BaseScraper):
@@ -134,11 +138,29 @@ class BscScan(BaseScraper):
                         "quantity": self.extract_element(str(qty)).text,
                         "percetages": str(perc['aria-valuenow']),
                      }
-                     hold_acc.append(data)
+
+                     address = self.extract_element(str(hold["data-clipboard-text"])).text
+                     quantity = self.extract_element(str(qty)).text
+                     percentages = str(perc['aria-valuenow'])
+                     value = self.extract_element(str(val[0])).text if val else None
+
+                     quantity = quantity.replace(".")
+                     print(type(quantity))
+
+                     # datas = Data(
+                     #    address = address,
+                     #    quantity = float(quantity),
+                     #    percentages = float(percentages),
+                     #    value = value if value else None
+                     # )
+
+                     # print(datas)
+
+                     # hold_acc.append(data)
 
                      if val:  # only if values exist
                         data["value"] = self.extract_element(str(val[0])).text
-                        hold_acc.append(data)
+                        # hold_acc.append(data)
                   
                else:
                   self.logger.error(f"FETCHED FAILED: {response.status}")
@@ -148,8 +170,8 @@ class BscScan(BaseScraper):
 
             self.logger.info(f"SUCCESSFULLY FETCHED INFORMATION: {self.pages[0]} url (STATUS: {response.status})") #type: ignore
          
-            df = pd.DataFrame(hold_acc)
-            df.to_csv(files) 
+            # df = pd.DataFrame(hold_acc)
+            # df.to_csv(files) 
 
             self.logger.info("FILE SAVED SUCCESSFULLY IN result FOLDER")
 

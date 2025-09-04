@@ -403,9 +403,34 @@
 
 #     print(f"Valid proxies: {valid_proxies}")
 
-import requests
+# import requests
 
-with open('./proxy/valid.txt', 'r') as file:
-    proxies = file.read().split('\n')
+# with open('./proxy/valid.txt', 'r') as file:
+#     proxies = file.read().split('\n')
     
-site_to_check = 'https://ipinfo.io/json'
+# site_to_check = 'https://ipinfo.io/json'
+
+from pydantic import BaseModel, fields, constr
+import re
+
+class Data(BaseModel):
+   address: str
+   quantity: float
+   percentages: float
+   value: float | None = None
+
+tes = None
+
+data = Data(
+    address = "tes",
+    quantity = 2.0,
+    percentages = 2.0,
+    value = tes if tes else None
+)
+
+# print(data)
+tes = '305,330,789.884037588805127959'
+
+tess = re.sub(r'\..*', '', tes)
+print(tes)
+print(int(tess.strip()))
