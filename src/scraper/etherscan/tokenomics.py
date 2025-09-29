@@ -33,7 +33,7 @@ class tknomics(BaseScraper):
 
    async def scrape_page(self):
 
-      """
+      """      
       Fetching information from bscscan.io and return information such as
          Args:
             name: Name of token
@@ -46,7 +46,7 @@ class tknomics(BaseScraper):
             circulating_supply_market_cap: Supply circulating on the market.
       """
       try:
-         page = await self.scrape(url=self.url, proccessor=self.process_text)
+         page = await self.scrape(url=self.url, processor=self.process_text)
          if page.status == 200:
 
             self.logger.info(f"FETCHING INFORMATION")
@@ -65,4 +65,4 @@ class tknomics(BaseScraper):
             self.logger.error(f"FETCHING FAILED: {page.status}")
 
       except Exception as error:
-         self.logger.error(f"ERROR {str(error)}")
+         self.logger.error(f"ERROR {str(error)}")  

@@ -74,22 +74,7 @@ class BaseScraper:
         """Process response as JSON"""
         return await response.json()
 
-   async def scrape(
-      self, 
-      url: str, 
-      proccessor: Callable[[aiohttp.ClientResponse], T],
-      ) -> ScraperResponse:
 
-      """
-      Custom asyncronous scraping using aiohttp and custom log
-
-         Args:
-            url (str): url given by user
-            processor (Callable[[aiohttp.ClientResponse], T]): Output Processor such as, `text`, `json` and `soup_object`
-      """
-
-      if proccessor is None:
-         proccessor = self.process_soup
    async def process_text(self, response: aiohttp.ClientResponse) -> str:
         """Process response as TEXT"""
         return await response.text()
@@ -172,7 +157,7 @@ class BaseScraper:
    async def scrape(
       self, 
       url: str, 
-      proccessor: Callable[[aiohttp.ClientResponse], T],
+      processor: Callable[[aiohttp.ClientResponse], T],
       ) -> ScraperResponse:
 
       """
@@ -183,12 +168,12 @@ class BaseScraper:
             processor (Callable[[aiohttp.ClientResponse], T]): Output Processor such as, `text`, `json` and `soup_object`
       """
 
-      if proccessor is None:
-         proccessor = self.process_soup
+      if processor is None:
+         processor = self.process_soup
          
       try:
          async with aiohttp.ClientSession() as session:
-            response = await self.fetch(session, url, proccessor)
+            response = await self.fetch(session, url, processor)
             return response
       except Exception as error:
          error_msg = f"Session ERROR for {url}: {str(error)}"

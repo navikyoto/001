@@ -1,5 +1,3 @@
-import re
-import json
 from dataclasses import dataclass
 from collections import defaultdict
 from typing import Any
@@ -88,7 +86,7 @@ class tknomics(BaseScraper):
       """
 
       try:
-         page = await self.scrape(url=self.url, proccessor=self.process_text)
+         page = await self.scrape(url=self.url, processor=self.process_text)
          if page.status == 200:
 
             self.logger.info(f"FETCHING INFORMATION")

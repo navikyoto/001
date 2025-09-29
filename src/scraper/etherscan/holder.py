@@ -52,10 +52,10 @@ class EtherScan(BaseScraper):
    async def return_(self, url, element) -> list:
             
       """
-      Returning element from a page, `proccessor` can be changed
+      Returning element from a page, `processor` can be changed
       """
 
-      page = await self.scrape(url=url, proccessor=self.process_text)
+      page = await self.scrape(url=url, processor=self.process_text)
       return await self.scrape_element(page.content, element)
    
    # Perbarui cookies terlebih dahulu dari etherscan dan bscscan
@@ -68,7 +68,7 @@ class EtherScan(BaseScraper):
 
       try:
          self.logger.info(f"FETCHING: web pagination")
-         page = await self.scrape(url=self.url, proccessor=self.process_text)
+         page = await self.scrape(url=self.url, processor=self.process_text)
          
          if page.status == 200:
             pages = await self.scrape_element(page.content,'span.page-link.text-nowrap')
@@ -113,7 +113,7 @@ class EtherScan(BaseScraper):
             for pages in range(self.pages[0]):
                self.page = pages+1
                self.url = self._url()
-               response = await self.scrape(url=self.url, proccessor=self.process_text)
+               response = await self.scrape(url=self.url, processor=self.process_text)
                if response.status == 200:
 
                   # Element of holders, quantity, percentages, and value
@@ -158,5 +158,5 @@ class EtherScan(BaseScraper):
          self.logger.warning(f"ERROR {str(error)}")
 
 if __name__ == "__main__":
-   tes = EtherScan("0x41D06390b935356b46aD6750bdA30148Ad2044A4")
+   tes = EtherScan("0x95AF4aF910c28E8EcE4512BFE46F1F33687424ce")
    asyncio.run(tes.scrape_info())

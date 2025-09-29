@@ -63,7 +63,7 @@ class BscScan(BaseScraper):
       Returning element from a page, `proccessor` can be changed
       """
 
-      page = await self.scrape(url=url, proccessor=self.process_text)
+      page = await self.scrape(url=url, processor=self.process_text)
       return await self.scrape_element(page.content, element)
     
    async def scrape_page(self):
@@ -74,7 +74,7 @@ class BscScan(BaseScraper):
 
       try:
          self.logger.info(f"FETCHING: web pagination")
-         page = await self.scrape(url=self.url, proccessor=self.process_text)
+         page = await self.scrape(url=self.url, processor=self.process_text)
          
          if page.status == 200:
             pages = await self.scrape_element(page.content,'span.page-link.text-nowrap')
@@ -118,7 +118,7 @@ class BscScan(BaseScraper):
             for pages in range(self.pages[0]):
                self.page = pages+1
                self.url = self._url()
-               response = await self.scrape(url=self.url, proccessor=self.process_text)
+               response = await self.scrape(url=self.url, processor=self.process_text)
                if response.status == 200:
                   task = [
                      self.return_(self.url, '.d-flex.align-items-center.gap-1 a.js-clipboard.link-secondary'),
@@ -138,29 +138,12 @@ class BscScan(BaseScraper):
                         "quantity": self.extract_element(str(qty)).text,
                         "percetages": str(perc['aria-valuenow']),
                      }
-
-                     address = self.extract_element(str(hold["data-clipboard-text"])).text
-                     quantity = self.extract_element(str(qty)).text
-                     percentages = str(perc['aria-valuenow'])
-                     value = self.extract_element(str(val[0])).text if val else None
-
-                     quantity = quantity.replace(".")
-                     print(type(quantity))
-
-                     # datas = Data(
-                     #    address = address,
-                     #    quantity = float(quantity),
-                     #    percentages = float(percentages),
-                     #    value = value if value else None
-                     # )
-
-                     # print(datas)
-
-                     # hold_acc.append(data)
+                     
+                     hold_acc.append(data)
 
                      if val:  # only if values exist
                         data["value"] = self.extract_element(str(val[0])).text
-                        # hold_acc.append(data)
+                        hold_acc.append(data)
                   
                else:
                   self.logger.error(f"FETCHED FAILED: {response.status}")
@@ -170,8 +153,8 @@ class BscScan(BaseScraper):
 
             self.logger.info(f"SUCCESSFULLY FETCHED INFORMATION: {self.pages[0]} url (STATUS: {response.status})") #type: ignore
          
-            # df = pd.DataFrame(hold_acc)
-            # df.to_csv(files) 
+            df = pd.DataFrame(hold_acc)
+            df.to_csv(files) 
 
             self.logger.info("FILE SAVED SUCCESSFULLY IN result FOLDER")
 
@@ -180,5 +163,5 @@ class BscScan(BaseScraper):
 
 
 if __name__ == "__main__":
-   tes = BscScan('0xA49fA5E8106E2d6d6a69E78df9B6A20AaB9c4444')
+   tes = BscScan('0x8dEdf84656fa932157e27C060D8613824e7979e3')
    asyncio.run(tes.scrape_info())
